@@ -26,18 +26,22 @@
 // TODO, this comes from BP, SP, and IP
 // see arch/x86/include/uapi/asm/perf_regs.h in the linux sources
 // We're going to hardcode everything for now...
-#define PERF_REGS_MASK_X86 ((1 << 6) | (1 << 7) | (1 << 8))
+#define PERF_REGS_MASK_X86 ((1ull << 6) | (1ull << 7) | (1ull << 8))
 
 // 31 and 32 are the stack and PC, respectively.  29 is r29, see
 // https://github.com/ARM-software/abi-aa where it is usd conventionally as the
 // frame pointer register
 // Note that the order of these has to be changed in the unwinding code!
-#define PERF_REGS_MASK_ARM ((1 << 31) | (1 << 32) | (1 << 29))
+#define PERF_REGS_MASK_ARM ((1ull << 31) | (1ull << 32) | (1ull << 29))
 
 // This is a human-hardcoded number given the mask above; update it if the mask
 // gets more bits
 #define PERF_REGS_COUNT 3
-#define PERF_REGS_MASK PERF_REGS_MASK_X86
+#ifdef __x86_64__ 
+  #define PERF_REGS_MASK PERF_REGS_MASK_X86
+#elif __aarch64__
+  #define PERF_REGS_MASK PERF_REGS_MASK_ARM
+#endif
 
 typedef struct read_format {
   uint64_t value;        // The value of the event
