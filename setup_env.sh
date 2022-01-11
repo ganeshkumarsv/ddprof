@@ -15,24 +15,39 @@ COMPILER_SETTING="-DCMAKE_CXX_COMPILER=${CXX:-"clang++"} -DCMAKE_C_COMPILER=${CC
 VENDOR_EXTENSION="-DVENDOR_EXTENSION=_${CC:-,,}_${OS_IDENTIFIER:-,,}"
 COMMON_OPT="${COMPILER_SETTING} ${VENDOR_EXTENSION} -DACCURACY_TEST=ON -DCMAKE_INSTALL_PREFIX=${DDPROF_INSTALL_PREFIX} -DBUILD_BENCHMARKS=${DDPROF_BUILD_BENCH} -DBUILD_NATIVE_LIB=${NATIVE_LIB}"
 
+# Detect platform architecture (x-compilation not currently supported)
+# TODO can this be moved cleanly into cmake?
+ARCH_FLAGS=""
+case $(uname -m) in
+    "aarch64")
+	ARCH_FLAGS="-DARM_BUILD=yes"
+        ;;
+    "x86_64")
+	ARCH_FLAGS=""
+        ;;
+    *)
+        echo "Nice processor you've got there, but I don't support it."
+	exit -1
+esac
+
 RelCMake() {
-    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Release  "$@"
+    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Release ${ARCH_FLAGS}  "$@"
 }
 
 DebCMake() {
-    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Debug "$@"
+    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Debug ${ARCH_FLAGS} "$@"
 }
 
 SanCMake() {
-    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=SanitizedDebug "$@"
+    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=SanitizedDebug ${ARCH_FLAGS} "$@"
 }
 
 TSanCMake() {
-    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=ThreadSanitizedDebug "$@"
+    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=ThreadSanitizedDebug ${ARCH_FLAGS} "$@"
 }
 
 CovCMake() {
-    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Coverage "$@"
+    cmake ${COMMON_OPT} -DCMAKE_BUILD_TYPE=Coverage ${ARCH_FLAGS} "$@"
 }
 
 ## Build a directory with a naming that reflects the OS / compiler we are using

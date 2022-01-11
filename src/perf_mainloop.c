@@ -24,7 +24,11 @@
 #include "pevent.h"
 #include "unwind.h"
 
+#ifdef __x86_64
 #define rmb() __asm__ volatile("lfence" ::: "memory")
+#elif __aarch64__
+#define rmb() __asm__ volatile("dmb ishld" ::: "memory")
+#endif
 
 #define WORKER_SHUTDOWN()                                                      \
   { return; }
