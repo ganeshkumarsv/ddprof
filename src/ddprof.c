@@ -13,7 +13,6 @@
 #include <sys/resource.h>
 #include <sys/sysinfo.h>
 #include <unistd.h>
-#include <x86intrin.h>
 
 #include "cap_display.h"
 #include "ddprof_cmdline.h"
