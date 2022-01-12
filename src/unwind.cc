@@ -46,6 +46,7 @@ void unwind_init_sample(UnwindState *us, uint64_t *sample_regs,
 
 DDRes unwindstate__unwind(UnwindState *us) {
   DDRes res = ddres_init();
+  LG_PRINT("Unwinding with registers IP: %lx, SP: %lx, BP: %lx", us->initial_regs.eip, us->initial_regs.esp, us->initial_regs.ebp);
   if (us->pid != 0) { // we can not unwind pid 0
     res = unwind_dwfl(us);
   }

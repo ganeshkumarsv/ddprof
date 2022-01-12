@@ -94,9 +94,16 @@ static void add_dwfl_frame(UnwindState *us, const Dso &dso, ElfAddress_t pc);
 static void copy_current_registers(const Dwfl_Frame *state,
                                    UnwindRegisters &current_regs) {
   // Update regs on current unwinding position
+#ifdef __x86_64__
   current_regs.ebp = state->regs[6];
   current_regs.esp = state->regs[7];
   current_regs.eip = state->regs[16];
+#elif __aarch64__
+  current_regs.ebp = state->regs[29];
+  current_regs.lr = state->regs[30]; // WTF???
+  current_regs.esp = state->regs[31];
+  current_regs.eip = state->regs[32]; // WTF???
+#endif
 }
 
 // returns true if we should continue unwinding
