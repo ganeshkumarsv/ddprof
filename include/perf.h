@@ -32,15 +32,16 @@
 // https://github.com/ARM-software/abi-aa where it is usd conventionally as the
 // frame pointer register
 // Note that the order of these has to be changed in the unwinding code!
-#define PERF_REGS_MASK_ARM ((1ull << 31) | (1ull << 32) | (1ull << 29))
+#define PERF_REGS_MASK_ARM ((1ull << 30) | (1ull << 31) | (1ull << 32) | (1ull << 29))
 
 // This is a human-hardcoded number given the mask above; update it if the mask
 // gets more bits
-#define PERF_REGS_COUNT 3
-#ifdef __x86_64__ 
+#ifdef __x86_64__
   #define PERF_REGS_MASK PERF_REGS_MASK_X86
+#define PERF_REGS_COUNT 3
 #elif __aarch64__
   #define PERF_REGS_MASK PERF_REGS_MASK_ARM
+#define PERF_REGS_COUNT 4
 #endif
 
 typedef struct read_format {
