@@ -8,12 +8,12 @@ set(VER_LIBDDPROF "0.2.0" CACHE STRING "libddprof version")
 
 set(SHA256_LIBDDPROF "7c055d11e1bcd12716fd7ff99597777c827da5dd2c99de0900f27672accb8de1" CACHE STRING "libddprof sha256")
 
-set(LIBDDPROF_X86_ROOT ${VENDOR_PATH}/libddprof/libddprof-x86_64-unknown-linux-gnu)
-set(LIBDDPROF_ARM_ROOT ${VENDOR_PATH}/libddprof/libddprof-arm64-unknown-linux-gnu)
+set(LIBDDPROF_X86_64_ROOT ${VENDOR_PATH}/libddprof/libddprof-x86_64-unknown-linux-gnu)
+set(LIBDDPROF_AARM64_ROOT ${VENDOR_PATH}/libddprof/libddprof-aarm64-unknown-linux-gnu)
 if( ARM_BUILD )
-  set(LIBDDPROF_ROOT ${LIBDDPROF_ARM_ROOT})
+  set(LIBDDPROF_ROOT ${LIBDDPROF_AARM64_ROOT})
 else()
-  set(LIBDDPROF_ROOT ${LIBDDPROF_X86_ROOT})
+  set(LIBDDPROF_ROOT ${LIBDDPROF_X86_64_ROOT})
 endif()
 
 set(LIBDDPROF_REL_FFI_LIB ${LIBDDPROF_ROOT}/lib/libddprof_ffi.a)
